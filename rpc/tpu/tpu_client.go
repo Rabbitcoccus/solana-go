@@ -3,13 +3,15 @@ package tpu
 import (
 	"context"
 	"errors"
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/rpc"
-	"github.com/desperatee/solana-go/rpc/ws"
 	"math"
 	"net"
 	"sort"
 	"time"
+
+	"github.com/desperatee/solana-go"
+	"github.com/desperatee/solana-go/rpc"
+	"github.com/desperatee/solana-go/rpc/ws"
+	quic "github.com/quic-go/quic-go"
 )
 
 var MAX_SLOT_SKIP_DISTANCE uint64 = 48
@@ -306,9 +308,9 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 	for _, leader := range leaderTPUSockets {
 		var connectionTries = 0
 		var failed = false
-		var connection net.Conn
+		var connection quic.Connection
 		for {
-			conn, err := net.Dial("udp", leader)
+			conn, err := quic.DialAddr(context.Background(), leader, nil, nil)
 			if err != nil {
 				lastError = err.Error()
 				if connectionTries < 3 {
@@ -322,18 +324,18 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 			connection = conn
 			break
 		}
-		if failed == true {
+		if failed {
 			continue
 		}
 		for i := 0; i < amount; i++ {
-			_, err := connection.Write(transaction)
+			err := connection.SendDatagram(transaction)
 			if err != nil {
 				lastError = err.Error()
 			} else {
 				successes++
 			}
 		}
-		connection.Close()
+		connection.CloseWithError(0x47, "No error")
 	}
 	if successes == 0 {
 		return errors.New(lastError)
