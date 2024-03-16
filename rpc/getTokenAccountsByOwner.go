@@ -17,7 +17,7 @@ package rpc
 import (
 	"errors"
 
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 )
 
 // GetTokenAccountsByOwner returns all SPL Token accounts by token owner.

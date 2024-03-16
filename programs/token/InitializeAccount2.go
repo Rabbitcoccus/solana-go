@@ -17,9 +17,9 @@ package token
 import (
 	"errors"
 
+	ag_solanago "github.com/Rabbitcoccus/solana-go"
+	ag_format "github.com/Rabbitcoccus/solana-go/text/format"
 	ag_binary "github.com/gagliardetto/binary"
-	ag_solanago "github.com/desperatee/solana-go"
-	ag_format "github.com/desperatee/solana-go/text/format"
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
@@ -179,9 +179,9 @@ func (obj *InitializeAccount2) UnmarshalWithDecoder(decoder *ag_binary.Decoder) 
 
 // NewInitializeAccount2Instruction declares a new InitializeAccount2 instruction with the provided parameters and accounts.
 func NewInitializeAccount2Instruction(
-// Parameters:
+	// Parameters:
 	owner ag_solanago.PublicKey,
-// Accounts:
+	// Accounts:
 	account ag_solanago.PublicKey,
 	mint ag_solanago.PublicKey,
 	SysVarRentPubkey ag_solanago.PublicKey) *InitializeAccount2 {

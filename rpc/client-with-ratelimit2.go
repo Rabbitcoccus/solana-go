@@ -3,7 +3,7 @@ package rpc
 import (
 	"io"
 
-	"github.com/desperatee/solana-go/rpc/jsonrpc"
+	"github.com/Rabbitcoccus/solana-go/rpc/jsonrpc"
 	"github.com/valyala/fasthttp"
 	"golang.org/x/time/rate"
 )

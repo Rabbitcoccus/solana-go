@@ -20,7 +20,7 @@ package rpc
 import (
 	"fmt"
 
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 )
 
 // GetConfirmedBlock returns identity and transaction information about a confirmed block in the ledger.

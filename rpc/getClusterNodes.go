@@ -15,7 +15,7 @@
 package rpc
 
 import (
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 )
 
 // GetClusterNodes returns information about all the nodes participating in the cluster.

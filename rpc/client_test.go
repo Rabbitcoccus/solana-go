@@ -25,7 +25,7 @@ import (
 	"testing"
 
 	"github.com/AlekSi/pointer"
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 	bin "github.com/gagliardetto/binary"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

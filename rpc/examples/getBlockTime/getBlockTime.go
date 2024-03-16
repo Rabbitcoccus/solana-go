@@ -17,8 +17,8 @@ package main
 import (
 	"time"
 
+	"github.com/Rabbitcoccus/solana-go/rpc"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/desperatee/solana-go/rpc"
 )
 
 func main() {

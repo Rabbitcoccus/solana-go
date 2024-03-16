@@ -15,7 +15,7 @@
 package rpc
 
 import (
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 )
 
 // GetBlockTime returns the estimated production time of a block.

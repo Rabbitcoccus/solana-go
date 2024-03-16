@@ -18,8 +18,8 @@ import (
 	"encoding/base64"
 	"testing"
 
+	"github.com/Rabbitcoccus/solana-go"
 	bin "github.com/gagliardetto/binary"
-	"github.com/desperatee/solana-go"
 	"github.com/stretchr/testify/assert"
 )
 

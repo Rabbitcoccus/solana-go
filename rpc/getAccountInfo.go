@@ -19,7 +19,7 @@ package rpc
 import (
 	"errors"
 
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 	bin "github.com/gagliardetto/binary"
 )
 

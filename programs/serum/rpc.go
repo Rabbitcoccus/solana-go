@@ -22,9 +22,9 @@ import (
 	"fmt"
 
 	rice "github.com/GeertJohan/go.rice"
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/rpc"
-	"github.com/desperatee/solana-go/rpc/ws"
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go/rpc/ws"
 	bin "github.com/gagliardetto/binary"
 	"go.uber.org/zap"
 )

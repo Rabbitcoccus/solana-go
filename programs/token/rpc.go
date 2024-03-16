@@ -20,7 +20,7 @@ package token
 import (
 	"fmt"
 
-	"github.com/desperatee/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 	bin "github.com/gagliardetto/binary"
 )
 

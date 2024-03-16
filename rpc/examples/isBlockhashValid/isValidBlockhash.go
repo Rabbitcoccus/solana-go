@@ -17,9 +17,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/rpc"
 )
 
 func main() {

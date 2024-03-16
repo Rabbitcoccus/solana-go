@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/desperatee/solana-go/cli"
+	"github.com/Rabbitcoccus/solana-go/cli"
 	"github.com/pkg/errors"
 )
 

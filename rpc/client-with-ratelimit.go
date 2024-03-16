@@ -5,7 +5,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"github.com/desperatee/solana-go/rpc/jsonrpc"
+	"github.com/Rabbitcoccus/solana-go/rpc/jsonrpc"
 	"go.uber.org/ratelimit"
 )
 

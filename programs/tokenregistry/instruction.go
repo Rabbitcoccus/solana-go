@@ -22,9 +22,9 @@ import (
 	"encoding/binary"
 	"fmt"
 
-	"github.com/desperatee/solana-go/text"
+	"github.com/Rabbitcoccus/solana-go/text"
 
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 	bin "github.com/gagliardetto/binary"
 )
 

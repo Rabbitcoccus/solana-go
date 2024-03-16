@@ -22,9 +22,9 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/programs/serum"
-	"github.com/desperatee/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/programs/serum"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 	"github.com/ryanuber/columnize"
 	"github.com/spf13/cobra"
 )

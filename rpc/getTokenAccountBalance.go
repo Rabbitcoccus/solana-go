@@ -15,7 +15,7 @@
 package rpc
 
 import (
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 )
 
 // GetTokenAccountBalance returns the token balance of an SPL Token account.

@@ -17,7 +17,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/desperatee/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 )
 
 func main() {

@@ -20,13 +20,13 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/desperatee/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 
 	"github.com/spf13/viper"
 
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/programs/system"
-	"github.com/desperatee/solana-go/programs/tokenregistry"
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/programs/system"
+	"github.com/Rabbitcoccus/solana-go/programs/tokenregistry"
 	"github.com/spf13/cobra"
 )
 

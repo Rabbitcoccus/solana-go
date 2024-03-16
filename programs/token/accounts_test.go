@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"testing"
 
+	"github.com/Rabbitcoccus/solana-go"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/desperatee/solana-go"
 	bin "github.com/gagliardetto/binary"
 	"github.com/stretchr/testify/require"
 )

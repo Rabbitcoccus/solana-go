@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/diff"
-	"github.com/desperatee/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/diff"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 	bin "github.com/gagliardetto/binary"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -17,7 +17,7 @@ package token
 import (
 	"encoding/binary"
 
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 	bin "github.com/gagliardetto/binary"
 )
 

@@ -7,7 +7,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//      http://www.apache.org/licenses/LICENSE-2.0
+//	http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,7 @@ package rpc
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 )
 
 // SendTransaction submits a signed transaction to the cluster for processing.
@@ -53,11 +53,11 @@ func (cl *Client) SendTransaction(
 //
 // Before submitting, the following preflight checks are performed:
 //
-// 	- The transaction signatures are verified
-//  - The transaction is simulated against the bank slot specified by the preflight
-//    commitment. On failure an error will be returned. Preflight checks may be
-//    disabled if desired. It is recommended to specify the same commitment and
-//    preflight commitment to avoid confusing behavior.
+//   - The transaction signatures are verified
+//   - The transaction is simulated against the bank slot specified by the preflight
+//     commitment. On failure an error will be returned. Preflight checks may be
+//     disabled if desired. It is recommended to specify the same commitment and
+//     preflight commitment to avoid confusing behavior.
 //
 // The returned signature is the first signature in the transaction, which is
 // used to identify the transaction (transaction id). This identifier can be

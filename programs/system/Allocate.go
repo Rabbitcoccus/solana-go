@@ -19,8 +19,8 @@ import (
 	"errors"
 	"fmt"
 
-	ag_solanago "github.com/desperatee/solana-go"
-	ag_format "github.com/desperatee/solana-go/text/format"
+	ag_solanago "github.com/Rabbitcoccus/solana-go"
+	ag_format "github.com/Rabbitcoccus/solana-go/text/format"
 	ag_binary "github.com/gagliardetto/binary"
 	ag_treeout "github.com/gagliardetto/treeout"
 )

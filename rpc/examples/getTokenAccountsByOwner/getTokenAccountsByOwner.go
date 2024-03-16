@@ -15,10 +15,10 @@
 package main
 
 import (
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/programs/token"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 	"github.com/davecgh/go-spew/spew"
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/programs/token"
-	"github.com/desperatee/solana-go/rpc"
 	bin "github.com/gagliardetto/binary"
 )
 

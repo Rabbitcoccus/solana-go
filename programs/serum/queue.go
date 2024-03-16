@@ -20,8 +20,8 @@ package serum
 import (
 	"strings"
 
+	"github.com/Rabbitcoccus/solana-go"
 	bin "github.com/gagliardetto/binary"
-	"github.com/desperatee/solana-go"
 )
 
 type RequestQueue struct {

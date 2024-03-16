@@ -22,9 +22,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/desperatee/solana-go/text"
+	"github.com/Rabbitcoccus/solana-go/text"
 
-	"github.com/desperatee/solana-go"
+	"github.com/Rabbitcoccus/solana-go"
 
 	"github.com/spf13/cobra"
 )

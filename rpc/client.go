@@ -26,7 +26,7 @@ import (
 
 	"github.com/valyala/fasthttp"
 
-	"github.com/desperatee/solana-go/rpc/jsonrpc"
+	"github.com/Rabbitcoccus/solana-go/rpc/jsonrpc"
 )
 
 var ErrNotFound = errors.New("not found")

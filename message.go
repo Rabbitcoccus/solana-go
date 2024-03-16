@@ -24,7 +24,7 @@ import (
 	bin "github.com/gagliardetto/binary"
 	"github.com/gagliardetto/treeout"
 
-	"github.com/desperatee/solana-go/text"
+	"github.com/Rabbitcoccus/solana-go/text"
 )
 
 type MessageAddressTableLookupSlice []MessageAddressTableLookup

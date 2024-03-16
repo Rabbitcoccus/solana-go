@@ -18,9 +18,9 @@ import (
 	"errors"
 	"fmt"
 
+	ag_solanago "github.com/Rabbitcoccus/solana-go"
+	ag_format "github.com/Rabbitcoccus/solana-go/text/format"
 	ag_binary "github.com/gagliardetto/binary"
-	ag_solanago "github.com/desperatee/solana-go"
-	ag_format "github.com/desperatee/solana-go/text/format"
 	ag_treeout "github.com/gagliardetto/treeout"
 )
 
@@ -214,9 +214,9 @@ func (obj *MintTo) UnmarshalWithDecoder(decoder *ag_binary.Decoder) (err error) 
 
 // NewMintToInstruction declares a new MintTo instruction with the provided parameters and accounts.
 func NewMintToInstruction(
-// Parameters:
+	// Parameters:
 	amount uint64,
-// Accounts:
+	// Accounts:
 	mint ag_solanago.PublicKey,
 	destination ag_solanago.PublicKey,
 	authority ag_solanago.PublicKey,

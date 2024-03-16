@@ -1,4 +1,4 @@
-module github.com/desperatee/solana-go
+module github.com/Rabbitcoccus/solana-go
 
 go 1.21
 
@@ -97,4 +97,4 @@ require (
 	google.golang.org/grpc v1.31.0 // indirect
 )
 
-replace github.com/gagliardetto/solana-go => github.com/desperatee/solana-go v0.0.0-20220728112623-02d7072d69d1
+replace github.com/gagliardetto/solana-go => github.com/Rabbitcoccus/solana-go v0.0.0-20220728112623-02d7072d69d1

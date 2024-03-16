@@ -28,7 +28,7 @@ import (
 	"github.com/gagliardetto/treeout"
 	"go.uber.org/zap"
 
-	"github.com/desperatee/solana-go/text"
+	"github.com/Rabbitcoccus/solana-go/text"
 )
 
 type Transaction struct {

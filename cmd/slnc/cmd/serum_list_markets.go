@@ -20,7 +20,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/desperatee/solana-go/programs/serum"
+	"github.com/Rabbitcoccus/solana-go/programs/serum"
 	"github.com/ryanuber/columnize"
 	"github.com/spf13/cobra"
 )

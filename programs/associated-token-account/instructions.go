@@ -17,9 +17,9 @@ package associatedtokenaccount
 import (
 	"fmt"
 
+	solana "github.com/Rabbitcoccus/solana-go"
+	text "github.com/Rabbitcoccus/solana-go/text"
 	spew "github.com/davecgh/go-spew/spew"
-	solana "github.com/desperatee/solana-go"
-	text "github.com/desperatee/solana-go/text"
 	bin "github.com/gagliardetto/binary"
 	treeout "github.com/gagliardetto/treeout"
 )

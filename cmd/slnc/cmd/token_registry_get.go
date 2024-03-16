@@ -21,11 +21,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/desperatee/solana-go/rpc"
+	"github.com/Rabbitcoccus/solana-go/rpc"
 
-	"github.com/desperatee/solana-go"
-	"github.com/desperatee/solana-go/programs/tokenregistry"
-	"github.com/desperatee/solana-go/text"
+	"github.com/Rabbitcoccus/solana-go"
+	"github.com/Rabbitcoccus/solana-go/programs/tokenregistry"
+	"github.com/Rabbitcoccus/solana-go/text"
 	"github.com/spf13/cobra"
 )
 
