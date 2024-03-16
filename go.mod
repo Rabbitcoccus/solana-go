@@ -6,7 +6,7 @@ require (
 	github.com/gagliardetto/binary v0.7.8
 	github.com/gagliardetto/gofuzz v1.2.2
 	github.com/gagliardetto/treeout v0.1.4
-	github.com/quic-go/quic-go v0.41.0
+	github.com/quic-go/quic-go v0.40.1
 )
 
 require (
@@ -33,6 +33,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml v1.2.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/quic-go/qtls-go1-20 v0.4.1 // indirect
 	github.com/spf13/afero v1.1.2 // indirect
 	github.com/spf13/cast v1.3.0 // indirect
 	github.com/spf13/jwalterweatherman v1.0.0 // indirect
