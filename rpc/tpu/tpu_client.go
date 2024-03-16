@@ -2,6 +2,7 @@ package tpu
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"math"
 	"net"
@@ -310,7 +311,7 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 		var failed = false
 		var connection quic.Connection
 		for {
-			conn, err := quic.DialAddr(context.Background(), leader, nil, nil)
+			conn, err := quic.DialAddr(context.Background(), leader, &tls.Config{}, &quic.Config{})
 			if err != nil {
 				lastError = err.Error()
 				if connectionTries < 3 {
