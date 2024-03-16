@@ -311,7 +311,10 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 		var failed = false
 		var connection quic.Connection
 		for {
-			conn, err := quic.DialAddr(context.Background(), leader, &tls.Config{}, &quic.Config{})
+			conn, err := quic.DialAddr(context.Background(), leader, &tls.Config{
+				ClientAuth:         tls.NoClientCert,
+				InsecureSkipVerify: true,
+			}, &quic.Config{})
 			if err != nil {
 				lastError = err.Error()
 				if connectionTries < 3 {
