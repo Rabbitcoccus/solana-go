@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"math"
 	"net"
 	"sort"
@@ -279,6 +280,7 @@ func (tpuClient *TPUClient) Load(connection *rpc.Client, websocketURL string, co
 }
 
 func (tpuClient *TPUClient) SendTransaction(transaction *solana.Transaction, amount int) (solana.Signature, error) {
+	fmt.Println("sending transaction (ver=1) ...")
 	rawTransaction, err := transaction.MarshalBinary()
 	if err != nil {
 		return solana.Signature{}, err
@@ -309,12 +311,13 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 	for _, leader := range leaderTPUSockets {
 		var connectionTries = 0
 		var failed = false
-		var connection quic.Connection
+		var stream quic.Stream
 		for {
 			conn, err := quic.DialAddr(context.Background(), leader, &tls.Config{
 				ClientAuth:         tls.NoClientCert,
 				InsecureSkipVerify: true,
 			}, &quic.Config{})
+			stream, err = conn.OpenStream()
 			if err != nil {
 				lastError = err.Error()
 				if connectionTries < 3 {
@@ -325,21 +328,20 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 					break
 				}
 			}
-			connection = conn
 			break
 		}
 		if failed {
 			continue
 		}
 		for i := 0; i < amount; i++ {
-			err := connection.SendDatagram(transaction)
+			err := sendPacket(stream, transaction)
 			if err != nil {
 				lastError = err.Error()
 			} else {
 				successes++
 			}
 		}
-		connection.CloseWithError(0x47, "No error")
+		stream.Close()
 	}
 	if successes == 0 {
 		return errors.New(lastError)
@@ -361,4 +363,22 @@ func New(connection *rpc.Client, websocketURL string, config TPUClientConfig) (*
 	tpuClient := TPUClient{}
 	err := tpuClient.Load(connection, websocketURL, config)
 	return &tpuClient, err
+}
+
+func sendPacket(stream quic.Stream, transaction []byte) error {
+	const PACKET_SIZE = 1232
+	offset := 0
+	for offset < len(transaction) {
+		var packet []byte
+		if offset+PACKET_SIZE >= len(transaction) {
+			packet = transaction[offset:]
+		} else {
+			packet = transaction[offset : offset+PACKET_SIZE]
+		}
+		_, err := stream.Write(packet)
+		if err != nil {
+			return err
+		}
+		offset += PACKET_SIZE
+	}
 }
