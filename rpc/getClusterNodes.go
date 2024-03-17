@@ -36,6 +36,9 @@ type GetClusterNodesResult struct {
 	// TPU network address for the node.
 	TPU *string `json:"tpu,omitempty"`
 
+	// TPU-Quic network address for the node.
+	TPUQuic *string `json:"tpuQuic,omitempty"`
+
 	// JSON RPC network address for the node, or empty if the JSON RPC service is not enabled.
 	RPC *string `json:"rpc,omitempty"`
 

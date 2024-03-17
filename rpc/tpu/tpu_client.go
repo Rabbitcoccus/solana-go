@@ -66,7 +66,7 @@ func (leaderTPUCache *LeaderTPUCache) FetchClusterTPUSockets() (map[string]strin
 	}
 	for _, contactInfo := range clusterNodes {
 		if contactInfo.TPU != nil {
-			clusterTPUSockets[contactInfo.Pubkey.String()] = *contactInfo.TPU
+			clusterTPUSockets[contactInfo.Pubkey.String()] = *contactInfo.TPUQuic
 		}
 	}
 	return clusterTPUSockets, nil
@@ -308,17 +308,26 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 	var successes = 0
 	var lastError = ""
 	leaderTPUSockets := tpuClient.LTPUService.LeaderTPUSockets(tpuClient.FanoutSlots)
+	fmt.Println(leaderTPUSockets)
 	for _, leader := range leaderTPUSockets {
 		var connectionTries = 0
 		var failed = false
-		var stream quic.Stream
+		var connection quic.Connection
+		// var stream quic.Stream
 		for {
+			fmt.Println("dialing ", leader)
 			conn, err := quic.DialAddr(context.Background(), leader, &tls.Config{
-				ClientAuth:         tls.NoClientCert,
+				NextProtos:         []string{"solana-tpu"},
 				InsecureSkipVerify: true,
-			}, &quic.Config{})
-			stream, err = conn.OpenStream()
+			}, &quic.Config{
+				HandshakeIdleTimeout: 30 * time.Second,
+			})
+			// if err == nil {
+			// 	fmt.Println("creating stream ", leader)
+			// 	stream, err = conn.OpenStreamSync(context.Background())
+			// }
 			if err != nil {
+				fmt.Printf("%s err: %v", leader, err)
 				lastError = err.Error()
 				if connectionTries < 3 {
 					connectionTries++
@@ -328,20 +337,22 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 					break
 				}
 			}
+			connection = conn
 			break
 		}
 		if failed {
 			continue
 		}
 		for i := 0; i < amount; i++ {
-			err := sendPacket(stream, transaction)
+			println("send tx to tpu")
+			err := connection.SendDatagram(transaction)
 			if err != nil {
 				lastError = err.Error()
 			} else {
 				successes++
 			}
 		}
-		stream.Close()
+		// stream.Close()
 	}
 	if successes == 0 {
 		return errors.New(lastError)
@@ -381,4 +392,5 @@ func sendPacket(stream quic.Stream, transaction []byte) error {
 		}
 		offset += PACKET_SIZE
 	}
+	return nil
 }
