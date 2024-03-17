@@ -280,7 +280,7 @@ func (tpuClient *TPUClient) Load(connection *rpc.Client, websocketURL string, co
 }
 
 func (tpuClient *TPUClient) SendTransaction(transaction *solana.Transaction, amount int) (solana.Signature, error) {
-	fmt.Println("sending transaction (ver=1) ...")
+	fmt.Println("sending transaction (ver=2) ...")
 	rawTransaction, err := transaction.MarshalBinary()
 	if err != nil {
 		return solana.Signature{}, err
