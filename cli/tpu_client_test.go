@@ -15,7 +15,7 @@ func TestClient(t *testing.T) {
 		return
 	}
 	tpuConfig := tpu.TPUClientConfig{
-		FanoutSlots: tpu.DEFAULT_FANOUT_SLOTS * 4,
+		FanoutSlots: tpu.DEFAULT_FANOUT_SLOTS,
 	}
 	tpuCli, err := tpu.New(rpcCli, "wss://fabled-damp-thunder.solana-mainnet.quiknode.pro/e3a2acc1e0273bf2d35fefbd1170bda5f00df04c/", tpuConfig)
 	if err != nil {

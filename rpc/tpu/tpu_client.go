@@ -3,7 +3,6 @@ package tpu
 import (
 	"context"
 	"crypto/tls"
-	"errors"
 	"fmt"
 	"math"
 	"net"
@@ -308,8 +307,6 @@ func (tpuClient *TPUClient) SendTransactionThroughSocket(transaction *solana.Tra
 }
 
 func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) error {
-	var successes = 0
-	var lastError = ""
 	leaderTPUSockets := tpuClient.LTPUService.LeaderTPUSockets(tpuClient.FanoutSlots)
 	fmt.Println(leaderTPUSockets)
 	var wg sync.WaitGroup
@@ -322,60 +319,58 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 			var connection quic.Connection
 			var stream quic.SendStream
 			var err1, err2 error
-			for {
-				fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z07"), "dialing ", leader)
-				connection, err1 = quic.DialAddr(context.Background(), leader, &tls.Config{
-					Certificates:       []tls.Certificate{cert},
-					NextProtos:         []string{"solana-tpu"},
-					InsecureSkipVerify: true,
-				}, &quic.Config{})
-				if err1 == nil {
-					fmt.Println(time.Now(), "creating stream ", leader)
-					stream, err2 = connection.OpenUniStreamSync(context.Background())
-				}
-				if err1 != nil || err2 != nil {
-					fmt.Printf("%s err1: %v, err2: %v\n", leader, err1, err2)
-					if err1 != nil {
-						lastError = err1.Error()
-					} else {
-						lastError = err2.Error()
+			sendTries := 0
+			for sendTries < 3 {
+				successes := 0
+				for {
+					fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z07"), "dialing ", leader)
+					connection, err1 = quic.DialAddr(context.Background(), leader, &tls.Config{
+						Certificates:       []tls.Certificate{cert},
+						NextProtos:         []string{"solana-tpu"},
+						InsecureSkipVerify: true,
+					}, &quic.Config{})
+					if err1 == nil {
+						fmt.Println(time.Now(), "creating stream ", leader)
+						stream, err2 = connection.OpenUniStreamSync(context.Background())
 					}
-					if connectionTries < 3 {
-						connectionTries++
-						continue
-					} else {
-						failed = true
+					if err1 != nil || err2 != nil {
+						fmt.Printf("%s err1: %v, err2: %v\n", leader, err1, err2)
+						if connectionTries < 3 {
+							connectionTries++
+							continue
+						} else {
+							failed = true
+							break
+						}
+					}
+					fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z07"), "connected")
+					break
+				}
+				if failed {
+					return
+				}
+				for i := 0; i < amount; i++ {
+					fmt.Printf("send tx to tpu, leader=%s\n", leader)
+					_, err := stream.Write(transaction)
+					if err != nil {
+						fmt.Printf("error sending tx to tpu, leader=%s, err: %s\n", leader, err)
 						break
+					} else {
+						successes++
 					}
 				}
-				fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z07"), "connected")
-				break
-			}
-			if failed {
-				return
-			}
-			for i := 0; i < amount; i++ {
-				println("send tx to tpu")
-				// err := connection.SendDatagram(transaction)
-				_, err := stream.Write(transaction)
-				if err != nil {
-					println("send error ", err.Error())
-					lastError = err.Error()
-				} else {
-					successes++
+				stream.Close()
+				connection.CloseWithError(0, "")
+				if successes == 0 {
+					return
 				}
+				sendTries++
 			}
-			stream.Close()
-			connection.CloseWithError(0, "")
 		}(leader)
 
 	}
 	wg.Wait()
-	if successes == 0 {
-		return errors.New(lastError)
-	} else {
-		return nil
-	}
+	return nil
 }
 
 func (tpuClient *TPUClient) SendRawTransactionThroughSocket(transaction []byte, amount int, socket *net.UDPConn) error {
