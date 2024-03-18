@@ -283,7 +283,7 @@ func (tpuClient *TPUClient) Load(connection *rpc.Client, websocketURL string, co
 }
 
 func (tpuClient *TPUClient) SendTransaction(transaction *solana.Transaction, amount int) (solana.Signature, error) {
-	fmt.Println("sending transaction (ver=3) ...")
+	fmt.Println("sending transaction (ver=4) ...")
 	rawTransaction, err := transaction.MarshalBinary()
 	if err != nil {
 		return solana.Signature{}, err
@@ -328,9 +328,7 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 					Certificates:       []tls.Certificate{cert},
 					NextProtos:         []string{"solana-tpu"},
 					InsecureSkipVerify: true,
-				}, &quic.Config{
-					HandshakeIdleTimeout: 10 * time.Second,
-				})
+				}, &quic.Config{})
 				if err1 == nil {
 					fmt.Println(time.Now(), "creating stream ", leader)
 					stream, err2 = connection.OpenUniStreamSync(context.Background())
