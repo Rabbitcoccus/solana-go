@@ -8,6 +8,7 @@ import (
 	"math"
 	"net"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/Rabbitcoccus/solana-go"
@@ -19,6 +20,8 @@ import (
 var MAX_SLOT_SKIP_DISTANCE uint64 = 48
 var DEFAULT_FANOUT_SLOTS uint64 = 12
 var MAX_FANOUT_SLOTS uint64 = 100
+
+var cert, _ = CreateTlsCertificate()
 
 type LeaderTPUCache struct {
 	LeaderTPUMap      map[string]string
@@ -309,51 +312,67 @@ func (tpuClient *TPUClient) SendRawTransaction(transaction []byte, amount int) e
 	var lastError = ""
 	leaderTPUSockets := tpuClient.LTPUService.LeaderTPUSockets(tpuClient.FanoutSlots)
 	fmt.Println(leaderTPUSockets)
+	var wg sync.WaitGroup
 	for _, leader := range leaderTPUSockets {
-		var connectionTries = 0
-		var failed = false
-		var connection quic.Connection
-		// var stream quic.Stream
-		for {
-			fmt.Println("dialing ", leader)
-			conn, err := quic.DialAddr(context.Background(), leader, &tls.Config{
-				NextProtos:         []string{"solana-tpu"},
-				InsecureSkipVerify: true,
-			}, &quic.Config{
-				HandshakeIdleTimeout: 30 * time.Second,
-			})
-			// if err == nil {
-			// 	fmt.Println("creating stream ", leader)
-			// 	stream, err = conn.OpenStreamSync(context.Background())
-			// }
-			if err != nil {
-				fmt.Printf("%s err: %v", leader, err)
-				lastError = err.Error()
-				if connectionTries < 3 {
-					connectionTries++
-					continue
+		wg.Add(1)
+		go func(leader string) {
+			defer wg.Done()
+			var connectionTries = 0
+			var failed = false
+			var connection quic.Connection
+			var stream quic.SendStream
+			var err1, err2 error
+			for {
+				fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z07"), "dialing ", leader)
+				connection, err1 = quic.DialAddr(context.Background(), leader, &tls.Config{
+					Certificates:       []tls.Certificate{cert},
+					NextProtos:         []string{"solana-tpu"},
+					InsecureSkipVerify: true,
+				}, &quic.Config{
+					HandshakeIdleTimeout: 10 * time.Second,
+				})
+				if err1 == nil {
+					fmt.Println(time.Now(), "creating stream ", leader)
+					stream, err2 = connection.OpenUniStreamSync(context.Background())
+				}
+				if err1 != nil || err2 != nil {
+					fmt.Printf("%s err1: %v, err2: %v\n", leader, err1, err2)
+					if err1 != nil {
+						lastError = err1.Error()
+					} else {
+						lastError = err2.Error()
+					}
+					if connectionTries < 3 {
+						connectionTries++
+						continue
+					} else {
+						failed = true
+						break
+					}
+				}
+				fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z07"), "connected")
+				break
+			}
+			if failed {
+				return
+			}
+			for i := 0; i < amount; i++ {
+				println("send tx to tpu")
+				// err := connection.SendDatagram(transaction)
+				_, err := stream.Write(transaction)
+				if err != nil {
+					println("send error ", err.Error())
+					lastError = err.Error()
 				} else {
-					failed = true
-					break
+					successes++
 				}
 			}
-			connection = conn
-			break
-		}
-		if failed {
-			continue
-		}
-		for i := 0; i < amount; i++ {
-			println("send tx to tpu")
-			err := connection.SendDatagram(transaction)
-			if err != nil {
-				lastError = err.Error()
-			} else {
-				successes++
-			}
-		}
-		// stream.Close()
+			stream.Close()
+			connection.CloseWithError(0, "")
+		}(leader)
+
 	}
+	wg.Wait()
 	if successes == 0 {
 		return errors.New(lastError)
 	} else {
